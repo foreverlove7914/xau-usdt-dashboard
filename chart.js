@@ -17,7 +17,8 @@ const candleSeries = chart.addCandlestickSeries();
 
 
 const ws = new WebSocket(
-"wss://fstream.binance.com/ws/xauusdt@kline_1m"
+const ws = new WebSocket(
+"wss://fstream.binance.com/ws/paxgusdt@kline_1m"
 );
 
 
