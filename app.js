@@ -1,41 +1,55 @@
-body{
+const livePrice = document.getElementById("livePrice");
+const status = document.getElementById("status");
+const trend = document.getElementById("trend");
+const signal = document.getElementById("signal");
 
-background:#101827;
-color:white;
-text-align:center;
-font-family:Arial;
+let oldPrice = 0;
+
+const ws = new WebSocket(
+"wss://fstream.binance.com/ws/xauusdt@trade"
+);
+
+ws.onopen = () => {
+status.innerHTML = "Connected";
+};
+
+
+ws.onmessage = (event)=>{
+
+const data = JSON.parse(event.data);
+
+const price = parseFloat(data.p);
+
+
+livePrice.innerHTML = "$" + price.toFixed(2);
+
+
+if(oldPrice > 0){
+
+if(price > oldPrice){
+
+trend.innerHTML="📈 NAIK";
+signal.innerHTML="BUY";
+
+}
+
+else if(price < oldPrice){
+
+trend.innerHTML="📉 TURUN";
+signal.innerHTML="SELL";
+
+}
 
 }
 
 
-h1{
+oldPrice = price;
 
-margin-top:40px;
-
-}
+};
 
 
-.box{
+ws.onclose=()=>{
 
-margin:50px auto;
-background:#202c3d;
-padding:40px;
-width:70%;
-border-radius:20px;
+status.innerHTML="Disconnected";
 
-}
-
-
-#livePrice{
-
-font-size:45px;
-color:#00ff88;
-
-}
-
-
-p{
-
-font-size:20px;
-
-}
+};
