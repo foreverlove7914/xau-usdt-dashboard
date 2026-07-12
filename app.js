@@ -1,45 +1,70 @@
 const livePrice = document.getElementById("livePrice");
 const status = document.getElementById("status");
 
-let oldPrice = 0;
+let lastPrice = 0;
 
 const ws = new WebSocket(
-"wss://fstream.binance.com/ws/xauusdt@trade"
+"wss://stream.bybit.com/v5/public/linear"
 );
 
 ws.onopen = () => {
- status.innerHTML = "Waiting signal...";
-};
 
+status.innerHTML = "Connected";
 
-ws.onmessage = (event) => {
-
- const data = JSON.parse(event.data);
-
- const price = parseFloat(data.p);
-
- livePrice.innerHTML = "$" + price.toFixed(2);
-
-
- if(oldPrice > 0){
-
-   if(price > oldPrice){
-      livePrice.style.color = "#00ff88";
-      status.innerHTML = "📈 PRICE NAIK";
-   }
-
-   else if(price < oldPrice){
-      livePrice.style.color = "#ff4444";
-      status.innerHTML = "📉 PRICE TURUN";
-   }
-
- }
-
- oldPrice = price;
+ws.send(JSON.stringify({
+op:"subscribe",
+args:["publicTrade.XAUUSDT"]
+}));
 
 };
 
 
-ws.onclose = () => {
- status.innerHTML="Disconnected";
+ws.onmessage = (event)=>{
+
+const msg = JSON.parse(event.data);
+
+
+if(msg.data){
+
+let price = Number(msg.data[0].p);
+
+
+livePrice.innerHTML =
+"$" + price.toFixed(2);
+
+
+
+if(lastPrice > 0){
+
+if(price > lastPrice){
+
+status.innerHTML="📈 NAIK";
+livePrice.style.color="#00ff88";
+
+}
+
+
+if(price < lastPrice){
+
+status.innerHTML="📉 TURUN";
+livePrice.style.color="#ff4444";
+
+}
+
+}
+
+
+lastPrice = price;
+
+
+}
+
+
+};
+
+
+ws.onclose = ()=>{
+
+status.innerHTML="Disconnected";
+
 };
