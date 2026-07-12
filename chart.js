@@ -8,21 +8,19 @@ const chart = LightweightCharts.createChart(
 
 const candleSeries = chart.addCandlestickSeries();
 
-const ws = new WebSocket(
-"wss://fstream.binance.com/ws/btcusdt@kline_1m"
-);
-
-ws.onmessage = (event) => {
-
-    const data = JSON.parse(event.data);
-    const k = data.k;
-
-    candleSeries.update({
-        time: k.t / 1000,
-        open: Number(k.o),
-        high: Number(k.h),
-        low: Number(k.l),
-        close: Number(k.c)
-    });
-
-};
+candleSeries.setData([
+{
+time: 1710000000,
+open:4100,
+high:4120,
+low:4090,
+close:4110
+},
+{
+time:1710000060,
+open:4110,
+high:4130,
+low:4100,
+close:4125
+}
+]);
