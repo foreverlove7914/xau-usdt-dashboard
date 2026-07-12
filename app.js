@@ -8,7 +8,7 @@ const ws = new WebSocket(
 );
 
 ws.onopen = () => {
- status.innerHTML = "Connected";
+ status.innerHTML = "Waiting signal...";
 };
 
 
