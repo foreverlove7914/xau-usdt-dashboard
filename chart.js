@@ -10,9 +10,11 @@ textColor:"#000000"
 }
 );
 
-const candleSeries = chart.addCandlestickSeries();
+const candleSeries = chart.addSeries(
+LightweightCharts.CandlestickSeries
+);
 
-let data = [
+const data = [
 {
 time:"2026-07-12",
 open:4100,
@@ -30,3 +32,5 @@ close:4110
 ];
 
 candleSeries.setData(data);
+
+chart.timeScale().fitContent();
