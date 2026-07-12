@@ -21,3 +21,54 @@ const samplePrices = [
 const ema20 = calculateEMA(samplePrices,20);
 
 console.log("EMA20:",ema20);
+// ===========================
+// RSI
+// ===========================
+
+function calculateRSI(prices, period = 14) {
+
+    let gains = 0;
+    let losses = 0;
+
+    for (let i = 1; i <= period; i++) {
+
+        const change = prices[i] - prices[i - 1];
+
+        if (change >= 0) {
+            gains += change;
+        } else {
+            losses -= change;
+        }
+
+    }
+
+    let avgGain = gains / period;
+    let avgLoss = losses / period;
+
+    let rsi = [];
+
+    for (let i = period + 1; i < prices.length; i++) {
+
+        const change = prices[i] - prices[i - 1];
+
+        if (change >= 0) {
+            avgGain = ((avgGain * (period - 1)) + change) / period;
+            avgLoss = ((avgLoss * (period - 1))) / period;
+        } else {
+            avgGain = ((avgGain * (period - 1))) / period;
+            avgLoss = ((avgLoss * (period - 1)) - change) / period;
+        }
+
+        const rs = avgGain / avgLoss;
+
+        rsi.push(100 - (100 / (1 + rs)));
+
+    }
+
+    return rsi;
+
+}
+
+const rsi14 = calculateRSI(samplePrices);
+
+console.log("RSI:", rsi14);
