@@ -40,7 +40,9 @@ close:4110
 ];
 
 
+console.log(data);
 candleSeries.setData(data);
+chart.timeScale().fitContent();
 
 
 window.addEventListener("resize",()=>{
