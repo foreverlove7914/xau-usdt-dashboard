@@ -6,16 +6,13 @@ height:400,
 layout:{
 background:{color:"#ffffff"},
 textColor:"#000000"
-},
-grid:{
-vertLines:{color:"#eeeeee"},
-horzLines:{color:"#eeeeee"}
 }
-});
+}
+);
 
 const candleSeries = chart.addCandlestickSeries();
 
-const data = [
+candleSeries.setData([
 {
 time:"2026-07-12",
 open:4100,
@@ -30,6 +27,4 @@ high:4120,
 low:4095,
 close:4110
 }
-];
-
-candleSeries.setData(data);
+]);
