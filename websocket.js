@@ -1,21 +1,22 @@
-const ws = new WebSocket(CONFIG.websocket);
+const ws = new WebSocket("wss://fstream.binance.com/ws/xauusdt@trade");
 
 ws.onopen = () => {
     console.log("Connected");
-
-    ws.send(JSON.stringify({
-        op: "subscribe",
-        args: [
-            `tickers.${CONFIG.symbol}`
-        ]
-    }));
+    document.getElementById("status").innerHTML = "Connected";
 };
 
 ws.onmessage = (event) => {
+
     const data = JSON.parse(event.data);
-    console.log(data);
+
+    const price = parseFloat(data.p).toFixed(2);
+
+    document.getElementById("livePrice").innerHTML = price;
+
 };
 
 ws.onclose = () => {
-    console.log("Disconnected");
+
+    document.getElementById("status").innerHTML = "Disconnected";
+
 };
