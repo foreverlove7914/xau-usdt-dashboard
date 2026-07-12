@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XAU/USDT Perpetual Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+
+<body>
+
+<header>
+
+<h1>XAU/USDT PERPETUAL DASHBOARD</h1>
+
+<div id="livePrice">Loading...</div>
+
+<div id="status">Connecting...</div>
+
+</header>
+
+<section class="top">
+
+<div class="card">
+<h2>M1</h2>
+<p id="m1">Loading...</p>
+</div>
+
+<div class="card">
+<h2>M5</h2>
+<p id="m5">Loading...</p>
+</div>
+
+<div class="card">
+<h2>M15</h2>
+<p id="m15">Loading...</p>
+</div>
+
+<div class="card">
+<h2>H1</h2>
+<p id="h1">Loading...</p>
+</div>
+
+<div class="card">
+<h2>H4</h2>
+<p id="h4">Loading...</p>
+</div>
+
+<div class="card">
+<h2>Daily</h2>
+<p id="d1">Loading...</p>
+</div>
+
+<div class="card">
+<h2>Weekly</h2>
+<p id="w1">Loading...</p>
+</div>
+
+</section>
+
+<div id="chart"></div>
+
+<section class="signals">
+
+<div class="signal">
+<h2>BUY / SELL SIGNAL</h2>
+<p id="signal">Waiting...</p>
+</div>
+
+<div class="signal">
+<h2>ENTRY</h2>
+<p id="entry">-</p>
+</div>
+
+<div class="signal">
+<h2>STOP LOSS</h2>
+<p id="sl">-</p>
+</div>
+
+<div class="signal">
+<h2>TAKE PROFIT</h2>
+<p id="tp">-</p>
+</div>
+
+</section>
+
+<script src="app.js"></script>
+
+</body>
+</html>
