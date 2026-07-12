@@ -1,30 +1,37 @@
 const chart = LightweightCharts.createChart(
 document.getElementById("chart"),
 {
+width: window.innerWidth,
 height:500,
 layout:{
 background:{color:"#101827"},
-textColor:"#fff"
+textColor:"#ffffff"
+},
+grid:{
+vertLines:{color:"#202c3d"},
+horzLines:{color:"#202c3d"}
 }
 });
 
 const candleSeries = chart.addCandlestickSeries();
 
+let price = 4100;
 
-fetch("https://api.binance.com/api/v3/klines?symbol=PAXGUSDT&interval=1m&limit=100")
-.then(res=>res.json())
-.then(data=>{
+setInterval(()=>{
 
-let candles=data.map(x=>({
-time:x[0]/1000,
-open:Number(x[1]),
-high:Number(x[2]),
-low:Number(x[3]),
-close:Number(x[4])
-}));
+let open = price;
+let close = open + (Math.random()-0.5)*10;
+let high = Math.max(open,close)+5;
+let low = Math.min(open,close)-5;
 
-candleSeries.setData(candles);
-
-chart.timeScale().fitContent();
-
+candleSeries.update({
+time: Math.floor(Date.now()/1000),
+open:open,
+high:high,
+low:low,
+close:close
 });
+
+price = close;
+
+},1000);
