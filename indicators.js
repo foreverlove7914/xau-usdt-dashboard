@@ -106,3 +106,40 @@ function calculateMACD(prices) {
 const macd = calculateMACD(samplePrices);
 
 console.log(macd);
+// ===========================
+// Bollinger Bands
+// ===========================
+
+function calculateBollingerBands(prices, period = 20, multiplier = 2) {
+
+    let upper = [];
+    let middle = [];
+    let lower = [];
+
+    for (let i = period - 1; i < prices.length; i++) {
+
+        const slice = prices.slice(i - period + 1, i + 1);
+
+        const mean = slice.reduce((a, b) => a + b, 0) / period;
+
+        const variance = slice.reduce((sum, value) => {
+            return sum + Math.pow(value - mean, 2);
+        }, 0) / period;
+
+        const std = Math.sqrt(variance);
+
+        middle.push(mean);
+        upper.push(mean + multiplier * std);
+        lower.push(mean - multiplier * std);
+    }
+
+    return {
+        upper,
+        middle,
+        lower
+    };
+}
+
+const bb = calculateBollingerBands(samplePrices);
+
+console.log(bb);
