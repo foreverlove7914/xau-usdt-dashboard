@@ -1,37 +1,38 @@
 const chart = LightweightCharts.createChart(
 document.getElementById("chart"),
 {
-width: window.innerWidth,
-height:500,
-layout:{
-background:{color:"#101827"},
-textColor:"#ffffff"
-},
-grid:{
-vertLines:{color:"#202c3d"},
-horzLines:{color:"#202c3d"}
-}
+    width: window.innerWidth,
+    height: 500,
+    layout:{
+        background:{color:"#111827"},
+        textColor:"#ffffff"
+    },
+    grid:{
+        vertLines:{color:"#1f2937"},
+        horzLines:{color:"#1f2937"}
+    }
 });
+
 
 const candleSeries = chart.addCandlestickSeries();
 
-let price = 4100;
 
-setInterval(()=>{
+const ws = new WebSocket(
+"wss://fstream.binance.com/ws/btcusdt@kline_1m"
+);
 
-let open = price;
-let close = open + (Math.random()-0.5)*10;
-let high = Math.max(open,close)+5;
-let low = Math.min(open,close)-5;
 
-candleSeries.update({
-time: Math.floor(Date.now()/1000),
-open:open,
-high:high,
-low:low,
-close:close
-});
+ws.onmessage = (event)=>{
 
-price = close;
+    const data = JSON.parse(event.data);
+    const k = data.k;
 
-},1000);
+    candleSeries.update({
+        time:k.t / 1000,
+        open:Number(k.o),
+        high:Number(k.h),
+        low:Number(k.l),
+        close:Number(k.c)
+    });
+
+};
