@@ -72,3 +72,37 @@ function calculateRSI(prices, period = 14) {
 const rsi14 = calculateRSI(samplePrices);
 
 console.log("RSI:", rsi14);
+// ===========================
+// MACD
+// ===========================
+
+function calculateMACD(prices) {
+
+    const ema12 = calculateEMA(prices, 12);
+    const ema26 = calculateEMA(prices, 26);
+
+    let macd = [];
+
+    for (let i = 0; i < ema26.length; i++) {
+        macd.push(ema12[i] - ema26[i]);
+    }
+
+    const signal = calculateEMA(macd, 9);
+
+    let histogram = [];
+
+    for (let i = 0; i < signal.length; i++) {
+        histogram.push(macd[i] - signal[i]);
+    }
+
+    return {
+        macd,
+        signal,
+        histogram
+    };
+
+}
+
+const macd = calculateMACD(samplePrices);
+
+console.log(macd);
