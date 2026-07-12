@@ -2,32 +2,23 @@ const chart = LightweightCharts.createChart(
     document.getElementById("chart"),
     {
         width: window.innerWidth,
-        height: 500,
-        layout:{
-            background:{color:"#111827"},
-            textColor:"#ffffff"
-        }
+        height: 500
     }
 );
 
-
-const candleSeries = chart.addSeries(
-    LightweightCharts.CandlestickSeries
-);
-
+const candleSeries = chart.addCandlestickSeries();
 
 const ws = new WebSocket(
 "wss://fstream.binance.com/ws/btcusdt@kline_1m"
 );
 
-
-ws.onmessage = function(event){
+ws.onmessage = (event) => {
 
     const data = JSON.parse(event.data);
     const k = data.k;
 
     candleSeries.update({
-        time: Math.floor(k.t / 1000),
+        time: k.t / 1000,
         open: Number(k.o),
         high: Number(k.h),
         low: Number(k.l),
