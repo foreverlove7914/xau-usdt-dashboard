@@ -28,3 +28,15 @@ candleSeries.setData([
 ]);
 
 livePrice.innerHTML = "Loading...";
+ws.onmessage = (event) => {
+
+    const msg = JSON.parse(event.data);
+
+    if (msg.data) {
+
+        document.getElementById("livePrice").innerHTML =
+            "Price : " + msg.data.lastPrice;
+
+    }
+
+};
