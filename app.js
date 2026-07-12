@@ -1,42 +1,24 @@
 const livePrice = document.getElementById("livePrice");
 const status = document.getElementById("status");
 
-const chart = LightweightCharts.createChart(
-    document.getElementById("chart"),
-    {
-        width: window.innerWidth,
-        height: 500,
-        layout: {
-            background: { color: "#111827" },
-            textColor: "#ffffff"
-        },
-        grid: {
-            vertLines: { color: "#2d3748" },
-            horzLines: { color: "#2d3748" }
-        }
-    }
-);
+status.innerHTML = "Connecting...";
 
-const candleSeries = chart.addCandlestickSeries();
+const ws = new WebSocket("wss://fstream.binance.com/ws/xauusdt@trade");
 
-status.innerHTML = "Waiting for market data...";
+ws.onopen = () => {
+    status.innerHTML = "Connected";
+};
 
-// Contoh data sementara
-candleSeries.setData([
-    { time: 1710000000, open: 3400, high: 3405, low: 3395, close: 3402 },
-    { time: 1710003600, open: 3402, high: 3410, low: 3400, close: 3408 }
-]);
-
-livePrice.innerHTML = "Loading...";
 ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
 
-    const msg = JSON.parse(event.data);
+    livePrice.innerHTML = Number(data.p).toFixed(2);
+};
 
-    if (msg.data) {
+ws.onerror = () => {
+    status.innerHTML = "Error";
+};
 
-        document.getElementById("livePrice").innerHTML =
-            "Price : " + msg.data.lastPrice;
-
-    }
-
+ws.onclose = () => {
+    status.innerHTML = "Disconnected";
 };
