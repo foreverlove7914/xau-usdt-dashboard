@@ -1,67 +1,54 @@
-// chart.js
-
 const chart = LightweightCharts.createChart(
-    document.getElementById("chart"),
-    {
-        width: window.innerWidth,
-        height: 550,
+document.getElementById("chart"),
+{
+    width: window.innerWidth,
+    height: 500,
 
-        layout: {
-            background: {
-                color: "#111827"
-            },
-            textColor: "#d1d4dc"
+    layout:{
+        background:{
+            color:"#101827"
         },
+        textColor:"#ffffff"
+    },
 
-        grid: {
-            vertLines: {
-                color: "#1f2937"
-            },
-            horzLines: {
-                color: "#1f2937"
-            }
+    grid:{
+        vertLines:{
+            color:"#202c3d"
         },
-
-        rightPriceScale: {
-            borderColor: "#374151"
-        },
-
-        timeScale: {
-            borderColor: "#374151",
-            timeVisible: true,
-            secondsVisible: false
+        horzLines:{
+            color:"#202c3d"
         }
     }
+});
+
+
+const candleSeries = chart.addCandlestickSeries();
+
+
+const ws = new WebSocket(
+"wss://fstream.binance.com/ws/xauusdt@kline_1m"
 );
 
-const candleSeries = chart.addCandlestickSeries({
-    upColor: "#00C853",
-    downColor: "#D50000",
-    borderVisible: false,
-    wickUpColor: "#00C853",
-    wickDownColor: "#D50000"
+
+ws.onmessage = (event)=>{
+
+const data = JSON.parse(event.data);
+
+const candle = data.k;
+
+
+candleSeries.update({
+
+time: candle.t / 1000,
+
+open: parseFloat(candle.o),
+
+high: parseFloat(candle.h),
+
+low: parseFloat(candle.l),
+
+close: parseFloat(candle.c)
+
 });
 
-// Data contoh sementara
-candleSeries.setData([
-    {
-        time: 1710000000,
-        open: 3400,
-        high: 3412,
-        low: 3398,
-        close: 3408
-    },
-    {
-        time: 1710003600,
-        open: 3408,
-        high: 3418,
-        low: 3404,
-        close: 3415
-    }
-]);
-
-window.addEventListener("resize", () => {
-    chart.applyOptions({
-        width: window.innerWidth
-    });
-});
+};
