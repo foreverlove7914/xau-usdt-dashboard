@@ -1,20 +1,19 @@
 const chart = LightweightCharts.createChart(
-document.getElementById("chart"),
-{
-    width: window.innerWidth,
-    height: 500,
-    layout:{
-        background:{color:"#111827"},
-        textColor:"#ffffff"
-    },
-    grid:{
-        vertLines:{color:"#1f2937"},
-        horzLines:{color:"#1f2937"}
+    document.getElementById("chart"),
+    {
+        width: window.innerWidth,
+        height: 500,
+        layout:{
+            background:{color:"#111827"},
+            textColor:"#ffffff"
+        }
     }
-});
+);
 
 
-const candleSeries = chart.addCandlestickSeries();
+const candleSeries = chart.addSeries(
+    LightweightCharts.CandlestickSeries
+);
 
 
 const ws = new WebSocket(
@@ -22,17 +21,17 @@ const ws = new WebSocket(
 );
 
 
-ws.onmessage = (event)=>{
+ws.onmessage = function(event){
 
     const data = JSON.parse(event.data);
     const k = data.k;
 
     candleSeries.update({
-        time:k.t / 1000,
-        open:Number(k.o),
-        high:Number(k.h),
-        low:Number(k.l),
-        close:Number(k.c)
+        time: Math.floor(k.t / 1000),
+        open: Number(k.o),
+        high: Number(k.h),
+        low: Number(k.l),
+        close: Number(k.c)
     });
 
 };
