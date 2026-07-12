@@ -1,37 +1,31 @@
 // config.js
 
 const CONFIG = {
-  appName: "XAU/USDT Professional Dashboard",
-  theme: "dark",
+    exchange: "Bybit",
+    category: "linear",
+    symbol: "XAUTUSDT",
 
-  // Symbol (akan digunakan oleh data feed)
-  symbol: "XAUUSD",
+    websocket: "wss://stream.bybit.com/v5/public/linear",
 
-  // Timeframes
-  timeframes: [
-    "1",
-    "3",
-    "5",
-    "15",
-    "30",
-    "60",
-    "240",
-    "D",
-    "W"
-  ],
+    intervals: [
+        "1",
+        "3",
+        "5",
+        "15",
+        "30",
+        "60",
+        "240",
+        "D",
+        "W"
+    ],
 
-  indicators: {
-    ema: [20, 50, 200],
+    emaFast: 20,
+    emaSlow: 50,
+    emaLong: 200,
+
     rsi: 14,
-    macd: {
-      fast: 12,
-      slow: 26,
-      signal: 9
-    },
-    bb: {
-      period: 20,
-      deviation: 2
-    },
-    atr: 14
-  }
+    atr: 14,
+    macdFast: 12,
+    macdSlow: 26,
+    macdSignal: 9
 };
