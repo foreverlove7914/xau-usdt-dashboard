@@ -1,89 +1,41 @@
-const priceBox = document.getElementById("livePrice");
-const status = document.getElementById("status");
-const trend = document.getElementById("trend");
-const signal = document.getElementById("signal");
+body{
 
-
-let oldPrice = 0;
-
-
-const ws = new WebSocket(
-"wss://stream.bybit.com/v5/public/linear"
-);
-
-
-ws.onopen = () => {
-
-status.innerHTML="Connected";
-
-ws.send(JSON.stringify({
-
-op:"subscribe",
-
-args:["publicTrade.XAUUSDT"]
-
-}));
-
-};
-
-
-
-ws.onmessage=(e)=>{
-
-
-let data=JSON.parse(e.data);
-
-
-if(data.data){
-
-
-let price=Number(data.data[0].p);
-
-
-
-priceBox.innerHTML="$"+price.toFixed(2);
-
-
-
-if(oldPrice){
-
-
-if(price>oldPrice){
-
-priceBox.style.color="#00ff88";
-
-status.innerHTML="📈 NAIK";
-
-trend.innerHTML="Trend: BULLISH";
-
-signal.innerHTML="BUY 🟢";
+background:#101827;
+color:white;
+text-align:center;
+font-family:Arial;
 
 }
 
 
+h1{
 
-else if(price<oldPrice){
-
-
-priceBox.style.color="#ff4444";
-
-status.innerHTML="📉 TURUN";
-
-trend.innerHTML="Trend: BEARISH";
-
-signal.innerHTML="SELL 🔴";
-
+margin-top:40px;
 
 }
 
 
+.box{
+
+margin:50px auto;
+background:#202c3d;
+padding:40px;
+width:70%;
+border-radius:20px;
+
 }
 
 
-oldPrice=price;
+#livePrice{
 
+font-size:45px;
+color:#00ff88;
 
 }
 
 
-};
+p{
+
+font-size:20px;
+
+}
