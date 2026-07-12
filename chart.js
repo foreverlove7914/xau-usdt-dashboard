@@ -4,55 +4,27 @@ document.getElementById("chart"),
 height:500,
 layout:{
 background:{color:"#101827"},
-textColor:"#ffffff"
-},
-grid:{
-vertLines:{color:"#202c3d"},
-horzLines:{color:"#202c3d"}
+textColor:"#fff"
 }
 });
-
 
 const candleSeries = chart.addCandlestickSeries();
 
 
-const ws = new WebSocket(
-const ws = new WebSocket(
-  ws.onerror = (error)=>{
-console.log("WS ERROR", error);
-};
+fetch("https://api.binance.com/api/v3/klines?symbol=PAXGUSDT&interval=1m&limit=100")
+.then(res=>res.json())
+.then(data=>{
 
-ws.onclose = ()=>{
-console.log("WS CLOSED");
-};
-"wss://fstream.binance.com/ws/paxgusdt@kline_1m"
-);
+let candles=data.map(x=>({
+time:x[0]/1000,
+open:Number(x[1]),
+high:Number(x[2]),
+low:Number(x[3]),
+close:Number(x[4])
+}));
 
+candleSeries.setData(candles);
 
-ws.onopen = ()=>{
-console.log("Candle connected");
-};
-
-
-ws.onmessage=(event)=>{
-
-const data = JSON.parse(event.data);
-
-const k = data.k;
-
-
-candleSeries.update({
-
-time:k.t / 1000,
-
-open:parseFloat(k.o),
-
-high:parseFloat(k.h),
-
-low:parseFloat(k.l),
-
-close:parseFloat(k.c)
+chart.timeScale().fitContent();
 
 });
-
-};
