@@ -17,8 +17,9 @@ status.innerHTML = "Connected";
 ws.onmessage = (event)=>{
 
 const data = JSON.parse(event.data);
+  console.log(data);
 
-const price = parseFloat(data.p);
+ const price = parseFloat(data.p || data.lastPrice || 0);;
 
 
 livePrice.innerHTML = "$" + price.toFixed(2);
