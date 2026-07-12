@@ -1,46 +1,21 @@
-// websocket.js
+const ws = new WebSocket(CONFIG.websocket);
 
-let socket = null;
+ws.onopen = () => {
+    console.log("Connected");
 
-function connectWebSocket() {
-    const status = document.getElementById("status");
+    ws.send(JSON.stringify({
+        op: "subscribe",
+        args: [
+            `tickers.${CONFIG.symbol}`
+        ]
+    }));
+};
 
-    status.innerHTML = "Connecting...";
+ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    console.log(data);
+};
 
-    // URL ini akan diganti dengan penyedia data sebenar
-    socket = new WebSocket("wss://example-data-provider");
-
-    socket.onopen = () => {
-        status.innerHTML = "🟢 LIVE";
-        console.log("WebSocket Connected");
-    };
-
-    socket.onmessage = (event) => {
-        try {
-            const data = JSON.parse(event.data);
-
-            // Contoh kemas kini harga
-            if (data.price) {
-                document.getElementById("livePrice").innerHTML =
-                    Number(data.price).toFixed(2);
-            }
-
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    socket.onclose = () => {
-        status.innerHTML = "🔴 Reconnecting...";
-
-        setTimeout(() => {
-            connectWebSocket();
-        }, 5000);
-    };
-
-    socket.onerror = (err) => {
-        console.log(err);
-    };
-}
-
-connectWebSocket();
+ws.onclose = () => {
+    console.log("Disconnected");
+};
