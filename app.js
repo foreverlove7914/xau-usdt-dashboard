@@ -3,54 +3,80 @@ const status = document.getElementById("status");
 const trend = document.getElementById("trend");
 const signal = document.getElementById("signal");
 
-let oldPrice = 0;
+let prices = [];
 
 const ws = new WebSocket(
 "wss://fstream.binance.com/ws/xauusdt@trade"
 );
 
 ws.onopen = () => {
-status.innerHTML = "Connected";
+    status.innerHTML = "Connected";
 };
 
 
-ws.onmessage = (event)=>{
+ws.onmessage = (event) => {
 
-const data = JSON.parse(event.data);
-  console.log(data);
+    const data = JSON.parse(event.data);
 
- const price = parseFloat(data.p || data.lastPrice || 0);;
+    const price = parseFloat(data.p);
 
-
-livePrice.innerHTML = "$" + price.toFixed(2);
+    if(!price) return;
 
 
-if(oldPrice > 0){
-
-if(price > oldPrice){
-
-trend.innerHTML="📈 NAIK";
-signal.innerHTML="BUY";
-
-}
-
-else if(price < oldPrice){
-
-trend.innerHTML="📉 TURUN";
-signal.innerHTML="SELL";
-
-}
-
-}
+    livePrice.innerHTML = "$" + price.toFixed(2);
 
 
-oldPrice = price;
+    prices.push(price);
+
+    if(prices.length > 20){
+        prices.shift();
+    }
+
+
+    let first = prices[0];
+    let last = prices[prices.length - 1];
+
+
+    if(last > first){
+
+        livePrice.style.color="#00ff88";
+
+        trend.innerHTML="📈 TREND NAIK";
+
+        signal.innerHTML="🟢 BUY";
+
+    }
+
+    else if(last < first){
+
+        livePrice.style.color="#ff4444";
+
+        trend.innerHTML="📉 TREND TURUN";
+
+        signal.innerHTML="🔴 SELL";
+
+    }
+
+    else{
+
+        trend.innerHTML="➡️ SIDEWAY";
+
+        signal.innerHTML="WAIT";
+
+    }
 
 };
 
 
-ws.onclose=()=>{
+ws.onerror = () => {
 
-status.innerHTML="Disconnected";
+    status.innerHTML="Connection Error";
+
+};
+
+
+ws.onclose = () => {
+
+    status.innerHTML="Disconnected";
 
 };
