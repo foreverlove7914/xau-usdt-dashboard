@@ -1,11 +1,11 @@
 // config.js
 
 const CONFIG = {
-    exchange: "Bybit",
+    exchange: "Binance",
     category: "linear",
     symbol: "XAUTUSDT",
 
-    websocket: "wss://stream.bybit.com/v5/public/linear",
+    websocket: "wss://fstream.binance.com/ws/xauusdt@trade",
 
     intervals: [
         "1",
