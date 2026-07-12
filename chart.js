@@ -4,7 +4,7 @@ document.getElementById("chart"),
 width: window.innerWidth,
 height:400,
 layout:{
-background:{color:"#ffffff"},
+background:{color:"#111827"}
 textColor:"#000000"
 }
 }
