@@ -18,6 +18,13 @@ const candleSeries = chart.addCandlestickSeries();
 
 const ws = new WebSocket(
 const ws = new WebSocket(
+  ws.onerror = (error)=>{
+console.log("WS ERROR", error);
+};
+
+ws.onclose = ()=>{
+console.log("WS CLOSED");
+};
 "wss://fstream.binance.com/ws/paxgusdt@kline_1m"
 );
 
