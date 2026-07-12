@@ -15,7 +15,7 @@ horzLines:{color:"#eeeeee"}
 
 const candleSeries = chart.addCandlestickSeries();
 
-candleSeries.setData([
+const data = [
 {
 time:"2026-07-12",
 open:4100,
@@ -30,4 +30,6 @@ high:4120,
 low:4095,
 close:4110
 }
-]);
+];
+
+candleSeries.setData(data);
