@@ -143,3 +143,40 @@ function calculateBollingerBands(prices, period = 20, multiplier = 2) {
 const bb = calculateBollingerBands(samplePrices);
 
 console.log(bb);
+// ===========================
+// ATR
+// ===========================
+
+function calculateATR(highs, lows, closes, period = 14) {
+
+    let trueRanges = [];
+
+    for (let i = 1; i < highs.length; i++) {
+
+        const tr = Math.max(
+            highs[i] - lows[i],
+            Math.abs(highs[i] - closes[i - 1]),
+            Math.abs(lows[i] - closes[i - 1])
+        );
+
+        trueRanges.push(tr);
+    }
+
+    return calculateEMA(trueRanges, period);
+
+}
+
+// Data contoh
+const sampleHigh = [
+3405,3407,3408,3410,3412,3415,3413,3418,3420,3422,
+3423,3425,3424,3428,3430,3432,3431,3434,3436,3438
+];
+
+const sampleLow = [
+3398,3400,3402,3404,3405,3408,3406,3410,3412,3414,
+3415,3418,3417,3420,3422,3424,3423,3426,3428,3430
+];
+
+const atr = calculateATR(sampleHigh, sampleLow, samplePrices);
+
+console.log("ATR:", atr);
